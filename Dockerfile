@@ -9,17 +9,17 @@ ENV USER user
 ENV HOME_DIR "/home/${USER}"
 ENV STEAMCMD_DIR "${HOME_DIR}/steamcmd" 
 ENV CSGO_DIR "${HOME_DIR}/csgo-server"
-ENV LANG C.UTF-8
 
-# Install prerequisites
-RUN apt-get update \
+RUN useradd -m "${USER}" \
+    # Install prerequisites
+    && apt-get update \
     && apt-get install -y --no-install-recommends --no-install-suggests \
         lib32gcc1 \
         ca-certificates \
         wget \
         unzip \
     # Download and unpack steamcmd
-    && mkdir -p "${STEAMCMD_DIR}" \
+    && mkdir "${STEAMCMD_DIR}" \
     && cd "${STEAMCMD_DIR}" \
     && wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz \
     && tar -xf steamcmd_linux.tar.gz \
@@ -38,7 +38,23 @@ RUN apt-get update \
     && apt-get purge -y wget unzip \
     && apt-get autoremove -y
 
+# Copy scripts
+COPY server-scripts/* "${HOME_DIR}"/
+# Copy plugin settings
+COPY cfg/* "${CSGO_DIR}"/csgo/cfg/
 
 # Install CSGO
-RUN cd "${STEAMCMD_DIR}" \
-    && ./steamcmd.sh +login anonymous +force_install_dir "${CSGO_DIR}" +app_update 740 validate +quit
+RUN bash "${HOME_DIR}"/server_update.sh
+
+# Set user permissions
+RUN chown -R "${USER}:${USER}" "${HOME_DIR}"\
+    && chmod -R u+rwx "${HOME_DIR}"
+
+VOLUME ${CSGO_DIR}
+
+USER ${USER}
+
+WORKDIR "${HOME_DIR}"
+
+# Run CSGO
+CMD ["bash", "server_launch.sh"]

@@ -5,28 +5,30 @@
 
 FROM debian:buster-slim
 
-ENV USER user
-ENV HOME_DIR "/home/${USER}"
-ENV STEAMCMD_DIR "${HOME_DIR}/steamcmd" 
-ENV CSGO_DIR "${HOME_DIR}/csgo-server"
+ENV USER=user
+ENV HOME_DIR=/home/$USER
+ENV STEAMCMD_DIR=$HOME_DIR/steamcmd \
+    CSGO_DIR=$HOME_DIR/csgo-server
 
-RUN useradd -m "${USER}" \
-    # Install prerequisites
-    && apt-get update \
+# Set up filesystem
+RUN useradd -m $USER \
+    && mkdir -p $STEAMCMD_DIR \
+    && mkdir -p $CSGO_DIR/csgo/cfg
+
+# Install prerequisites
+RUN apt-get update \
     && apt-get install -y --no-install-recommends --no-install-suggests \
         lib32gcc1 \
         ca-certificates \
         wget \
         unzip \
     # Download and unpack steamcmd
-    && mkdir "${STEAMCMD_DIR}" \
-    && cd "${STEAMCMD_DIR}" \
+    && cd $STEAMCMD_DIR \
     && wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz \
     && tar -xf steamcmd_linux.tar.gz \
     && rm steamcmd_linux.tar.gz \
     # Download and unpack plugins
-    && mkdir -p "${CSGO_DIR}/csgo" \
-    && cd "${CSGO_DIR}/csgo" \
+    && cd $CSGO_DIR/csgo \
     && wget https://mms.alliedmods.net/mmsdrop/1.11/mmsource-1.11.0-git1144-linux.tar.gz \
     && wget https://sm.alliedmods.net/smdrop/1.10/sourcemod-1.10.0-git6503-linux.tar.gz \
     && wget https://github.com/splewis/get5/releases/download/0.7.1/get5_0.7.1.zip \
@@ -34,27 +36,41 @@ RUN useradd -m "${USER}" \
     && tar xf sourcemod-1.10.0-git6503-linux.tar.gz \
     && unzip get5_0.7.1.zip \
     && rm *.tar.gz *.zip \
+    # Fix permissions
+    && chown -R $USER:$USER $HOME_DIR \
     # Tidy up
     && apt-get purge -y wget unzip \
     && apt-get autoremove -y
 
+USER $USER
+
 # Copy scripts
-COPY server-scripts/* "${HOME_DIR}"/
-# Copy plugin settings
-COPY cfg/* "${CSGO_DIR}"/csgo/cfg/
+COPY server-scripts/* $HOME_DIR/
 
 # Install CSGO
-RUN bash "${HOME_DIR}"/server_update.sh
+RUN bash $HOME_DIR/server_update.sh
 
-# Set user permissions
-RUN chown -R "${USER}:${USER}" "${HOME_DIR}"\
-    && chmod -R u+rwx "${HOME_DIR}"
+# Copy plugin settings
+COPY cfg/* $CSGO_DIR/csgo/cfg/
 
-VOLUME ${CSGO_DIR}
+WORKDIR $HOME_DIR
 
-USER ${USER}
+# Set default values for environment variables
+ENV RCON_PASSWORD="admin" \
+    PORT=27015 \
+    GOTV_PORT=27020 \
+    TICKRATE=128 \
+    MAXPLAYERS=30 \
+    GAMETYPE=0 \
+    GAMEMODE=1 \
+    MAPGROUP="mg_active" \
+    MAP="de_mirage" \
+    INITIAL_CONFIG="lobby"
 
-WORKDIR "${HOME_DIR}"
+# Expose ports
+EXPOSE $PORT/tcp \
+       $PORT/udp \
+       $GOTV_PORT/udp
 
 # Run CSGO
 CMD ["bash", "server_launch.sh"]

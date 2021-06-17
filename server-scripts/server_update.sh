@@ -1,6 +1,6 @@
-bash "${STEAMCMD_DIR}"/steamcmd.sh \
+bash $STEAMCMD_DIR/steamcmd.sh \
+    +force_install_dir $CSGO_DIR \
     +login anonymous \
-    +force_install_dir "${CSGO_DIR}" \
     +app_update 740 validate \
     +quit
 

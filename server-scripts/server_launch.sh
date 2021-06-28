@@ -1,6 +1,6 @@
 cd $CSGO_DIR
 
-ARGS="-game csgo -console -autoupdate -usercon"
+ARGS="-game csgo -console -autoupdate -usercon $ARGS"
 
 if [ -v SERVER_TOKEN ]
 then
@@ -75,5 +75,5 @@ then
     ARGS="$ARGS +exec $INITIAL_CONFIG"
 fi
 
-bash srcds_run $ARGS
+./srcds_run $ARGS
 

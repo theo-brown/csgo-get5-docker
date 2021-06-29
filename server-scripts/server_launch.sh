@@ -1,5 +1,3 @@
-cd $CSGO_DIR
-
 ARGS="-game csgo -console -autoupdate -usercon $ARGS"
 
 if [ -v SERVER_TOKEN ]
@@ -70,10 +68,12 @@ if [ -v WORKSHOP_AUTHKEY ]
 then
     ARGS="$ARGS -authkey $WORKSHOP_AUTHKEY"
 fi
-if [ -v INITIAL_CONFIG ]
+if [ -v AUTOEXEC ]
 then
-    ARGS="$ARGS +exec $INITIAL_CONFIG"
+    ARGS="$ARGS +exec $AUTOEXEC"
 fi
 
-./srcds_run $ARGS
+echo $MATCH_CONFIG > $CSGO_DIR/csgo/match_config.json
 
+cd $CSGO_DIR
+./srcds_run $ARGS

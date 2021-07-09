@@ -35,11 +35,10 @@ RUN apt-get update \
     && wget -q -O - https://mms.alliedmods.net/mmsdrop/1.11/mmsource-1.11.0-git1144-linux.tar.gz | tar -xz -C $CSGO_DIR/csgo \
     # SourceMod v1.10
     && wget -q -O - https://sm.alliedmods.net/smdrop/1.10/sourcemod-1.10.0-git6504-linux.tar.gz | tar -xz -C $CSGO_DIR/csgo \
-    # Get5 dev build
-    # The 'latest release' is outdated and setting map_sides in the json doesn't work, so use the last successful build
-    && wget -q https://ci.splewis.net/job/get5/lastSuccessfulBuild/artifact/builds/get5/get5-527.zip \
-    && unzip -q get5-527.zip -d $CSGO_DIR/csgo \
-    && rm get5-527.zip \
+    # Get5
+    && wget -q https://github.com/splewis/get5/releases/download/0.7.2/get5_0.7.2.zip \
+    && unzip -q get5_0.7.2.zip -d $CSGO_DIR/csgo \
+    && rm get5_0.7.2.zip \
     # Set permissions
     && chown -R $USER:$USER $HOME_DIR \
     && chmod -R 755 $HOME_DIR \
@@ -55,7 +54,7 @@ USER $USER
 COPY server-scripts/server_update.sh $HOME_DIR/
 
 # Install CSGO
-#RUN bash $HOME_DIR/server_update.sh
+RUN bash $HOME_DIR/server_update.sh
 
 # Copy launch script
 COPY server-scripts/server_launch.sh $HOME_DIR/

@@ -75,7 +75,7 @@ if [ -v AUTOEXEC ]
 then
     ARGS="$ARGS +exec $AUTOEXEC"
 fi
-if [-v MATCH_CONFIG ]
+if [ -v MATCH_CONFIG ]
 then
     echo $MATCH_CONFIG > $CSGO_DIR/csgo/match_config.json
 else

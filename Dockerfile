@@ -15,11 +15,6 @@ RUN useradd -m $USER \
     && mkdir -p $STEAMCMD_DIR \
     && mkdir -p $CSGO_DIR/csgo
 
-# Copy scripts
-COPY server-scripts/* $HOME_DIR/
-# Copy configs
-COPY cfg/* $CSGO_DIR/csgo/cfg/
-
 RUN apt-get update \
     # Install prerequisites
     #    lib32gcc1: prerequisite for steamcmd
@@ -56,13 +51,22 @@ RUN apt-get update \
 
 USER $USER
 
+# Copy install script
+COPY server-scripts/server_update.sh $HOME_DIR/
+
 # Install CSGO
-RUN bash $HOME_DIR/server_update.sh
+#RUN bash $HOME_DIR/server_update.sh
+
+# Copy launch script
+COPY server-scripts/server_launch.sh $HOME_DIR/
+
+# Copy configs
+COPY cfg/* $CSGO_DIR/csgo/cfg/
 
 WORKDIR $HOME_DIR
 
 # Set default values for environment variables
-# Setting IP to 0 means that it is forced to run on the localhost interface
+# Setting IP to 0 means that it is forced to listen on all interfaces
 ENV IP="0" \
     PORT=27015 \
     GOTV_PORT=27020 \

@@ -1,3 +1,6 @@
+######################
+# Set launch options #
+######################
 ARGS="-game csgo -console -autoupdate -usercon $ARGS"
 
 if [ -v SERVER_TOKEN ]
@@ -72,8 +75,15 @@ if [ -v AUTOEXEC ]
 then
     ARGS="$ARGS +exec $AUTOEXEC"
 fi
+if [-v MATCH_CONFIG ]
+then
+    echo $MATCH_CONFIG > $CSGO_DIR/csgo/match_config.json
+else
+    echo 'get5_check_auths 0' > $CSGO_DIR/csgo/cfg/sourcemod/get5.cfg
+fi
 
-echo $MATCH_CONFIG > $CSGO_DIR/csgo/match_config.json
-
+#################
+# Launch server #
+#################
 cd $CSGO_DIR
 ./srcds_run $ARGS

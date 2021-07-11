@@ -89,8 +89,8 @@ USER $USER
 WORKDIR $HOME_DIR
 
 # Set default values for environment variables
-# Setting IP to 0 means that it is forced to listen on all interfaces
-ENV IP="0" \
+# Setting IP to 0.0.0.0 means that it is forced to listen on all interfaces (wildcard) - don't change this
+ENV IP="0.0.0.0" \
     PORT=27015 \
     GOTV_PORT=27020 \
     TICKRATE=128 \

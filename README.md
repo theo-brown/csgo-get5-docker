@@ -39,6 +39,8 @@
 
     4.2 [Team schema](#42-team-schema)
 
+5. [Keeping the image up to date](#5-keeping-the-image-up-to-date)
+
 
 ## 1. Introduction
 
@@ -258,3 +260,21 @@ Of the below fields, only the team1 and team2 fields are actually required. Reas
 | `logo`         | Team logo (optional)
 | `players`      | Either an array of steamids or, to override in-game player names, a dictionary of steamids to names (**required**)
 | `series_score` | Current score in the series. This can be used to give a team a map advantage (default: 0)
+
+
+## 5. Keeping the image up to date
+
+The script `image_update/image_updater_remote.sh` is run on a server as a `cron` job, to periodically check for CS:GO updates.
+If the version of CS:GO installed on the image differs from the latest version of CS:GO according the Steam Web API, then the script `server-scripts/server_update.sh` is run within the container.
+The changes are committed to the image, the image label updated to show the latest version of CS:GO installed, and the image pushed to the registry.
+
+Consequently, the image on the registry should always be running the latest version of CS:GO. The update-push process can take a while, so it may be a little delayed.
+
+If you urgently need to use the image without waiting for the registry image to update or to avoid re-downloading from the registry, you have two options.
+
+1. Do nothing, and continue to start containers as you would normally. As the CS:GO server is launched with the `-autoupdate` flag, it will check for updates on launch.
+The downside of this approach is that every new container instance will have to redownload the update, leading to slower start-up times.
+
+2. Update your local copy of the image using `image_update/image_updater_local.sh`. This ensures that every container will run with an up-to-date copy of CS:GO.
+
+The image updater scripts use `jq` to parse JSON objects from the Steam Web API. Install it using `sudo apt install jq`.

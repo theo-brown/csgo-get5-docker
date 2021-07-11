@@ -22,32 +22,30 @@ ENV SOURCE_URL=https://raw.githubusercontent.com/theo-brown/csgo-docker/main \
 RUN useradd -m $USER \
     && su $USER -c \
         "mkdir -p $STEAMCMD_DIR \
-         && mkdir -p $CSGO_DIR/csgo"
-
-# Install prerequisites
-#    lib32gcc1: prerequisite for steamcmd
-#    lib32stdc++6: prequisite for plugins 
-#    ca-certificates: required to trust downloads from the internet
-#    unzip: used to unzip get5 
-#    wget: used to download steam and plugins
-RUN apt-get -qq update \
+         && mkdir -p $CSGO_DIR/csgo" \
+    # Install prerequisites
+    #    lib32gcc1: prerequisite for steamcmd
+    #    lib32stdc++6: prequisite for plugins 
+    #    ca-certificates: required to trust downloads from the internet
+    #    unzip: used to unzip get5 
+    #    wget: used to download steam and plugins
+    && apt-get -qq update \
     && apt-get -qq install -y --no-install-recommends --no-install-suggests \
         lib32gcc1 \
         lib32stdc++6 \
         ca-certificates \
         unzip \
-        wget
-
-# Download and unpack server files
-#    steamcmd
-#    metamod
-#    sourcemod
-#    get5
-# NOTE: due to get5 being shipped as a .zip, we have to be a bit fiddly with unpacking.
-# Downloading and unzipping get5 first means that we can move all of the get5 files to
-# the right places before untarring everything else. Untarring can merge into existing
-# directories, but unzipping and moving cannot, so we unzip first.
-RUN su $USER -c \
+        wget \
+    # Download and unpack server files
+    #    steamcmd
+    #    metamod
+    #    sourcemod
+    #    get5
+    # NOTE: due to get5 being shipped as a .zip, we have to be a bit fiddly with unpacking.
+    # Downloading and unzipping get5 first means that we can move all of the get5 files to
+    # the right places before untarring everything else. Untarring can merge into existing
+    # directories, but unzipping and moving cannot, so we unzip first.
+    && su $USER -c \
         "wget -q -O $HOME_DIR/get5.zip $GET5_URL \
          && unzip -q $HOME_DIR/get5.zip -d $HOME_DIR \
          && mv $HOME_DIR/get5/addons $CSGO_DIR/csgo/addons \
@@ -75,12 +73,11 @@ RUN su $USER -c \
 # This requiring two layers is a bit of a pain, but we can't download whole directories
 # from $SOURCE_URL, so this is the easiest way of doing it 
 COPY cfg/* $CSGO_DIR/csgo/cfg/
-RUN chown -R $USER $CSGO_DIR/csgo/cfg
-
-# Tidy up
-# Remove all unnecessary installed programs
-# Clear cache
-RUN apt-get -qq purge -y unzip wget \
+RUN chown -R $USER $CSGO_DIR/csgo/cfg \
+    # Tidy up
+    # Remove all unnecessary installed programs
+    # Clear cache
+    && apt-get -qq purge -y unzip wget \
     && apt-get -qq autoremove -y \
     && apt-get -qq clean \
     && rm -rf /var/lib/apt/lists/*

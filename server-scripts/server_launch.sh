@@ -15,6 +15,10 @@ if [ -v RCON_PASSWORD ]
 then
     ARGS="$ARGS +rcon_password $RCON_PASSWORD"
 fi
+if [ -v GOTV_PASSWORD ]
+then
+    ARGS="$ARGS +tv_password $GOTV_PASSWORD"
+fi
 if [ -v  PUBLIC_ADDRESS ]
 then
     ARGS="$ARGS +net_public_adr $PUBLIC_ADDRESS"

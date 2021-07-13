@@ -5,6 +5,12 @@
 
 FROM debian:buster-slim
 
+# Label this image with the CSGO version that is installed
+# To get the CSGO version, run
+# curl -s "http://api.steampowered.com/ISteamApps/UpToDateCheck/v1?appid=730&version=0" | jq .response.required_version
+ARG CSGO_VERSION
+LABEL csgo_version=$CSGO_VERSION
+
 ENV USER=user
 ENV HOME_DIR=/home/$USER
 ENV STEAMCMD_DIR=$HOME_DIR/Steam \
@@ -62,7 +68,7 @@ RUN useradd -m $USER \
 RUN su $USER -c \
      "wget -q -O $HOME_DIR/server_update.sh $SOURCE_URL/server-scripts/server_update.sh \
       && chmod u+x $HOME_DIR/server_update.sh \
-      && bash $HOME_DIR/server_update.sh" 
+      && bash $HOME_DIR/server_update.sh"
 
 # Download launch script and set perms
 RUN su $USER -c \

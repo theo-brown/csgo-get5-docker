@@ -26,6 +26,8 @@ fi
 if [ -v IP ]
 then
     ARGS="$ARGS -ip $IP"
+else
+    ARGS="$ARGS -ip 0.0.0.0"
 fi
 if [ -v PORT ]
 then
@@ -42,26 +44,38 @@ fi
 if [ -v TICKRATE ]
 then
     ARGS="$ARGS -tickrate $TICKRATE"
+else
+    ARGS="$ARGS -tickrate 128"
 fi
 if [ -v MAXPLAYERS ]
 then
     ARGS="$ARGS -maxplayers_override $MAXPLAYERS"
+else
+    ARGS="$ARGS -maxplayers_override 10"
 fi
 if [ -v GAMETYPE ]
 then
     ARGS="$ARGS +game_type $GAMETYPE"
+else
+    ARGS="$ARGS +game_type 0"
 fi
 if [ -v GAMEMODE ]
 then
     ARGS="$ARGS +game_mode $GAMEMODE"
+else
+    ARGS="$ARGS +game_mode 1"
 fi
 if [ -v MAPGROUP ]
 then
     ARGS="$ARGS +mapgroup $MAPGROUP"
+else
+    ARGS="$ARGS +mapgroup mg_active"
 fi
 if [ -v MAP ]
 then
     ARGS="$ARGS +map $MAP"
+else
+    ARGS="$ARGS +map de_mirage"
 fi
 if [ -v HOST_WORKSHOP_COLLECTION ]
 then

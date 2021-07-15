@@ -83,7 +83,7 @@ At minimum, you'll probably want to launch the container with the following envi
 
 * `-e GOTV_PASSWORD=<another password>`: set the GOTV password.
 
-* `-e SERVER_TOKEN=<your GSLT>`: set a Game Server Login Token so that the server can be connected to by non-LAN clients (see [below]((#3-environment-variables)).
+* `-e SERVER_TOKEN=<your GSLT>`: set a Game Server Login Token so that the server can be connected to by non-LAN clients (see [below](#3-environment-variables)).
 
 If you want to start the server with a loaded config, set:
 

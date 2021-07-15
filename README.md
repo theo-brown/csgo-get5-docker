@@ -16,6 +16,9 @@
   <img src="https://img.shields.io/github/license/theo-brown/csgo-docker">
  </a>
  <img src="https://img.shields.io/maintenance/yes/2021">
+ <a href="https://github.com/theo-brown/csgo-docker/actions/workflows/check-latest-csgo-version.yml">
+  <img src="https://github.com/theo-brown/csgo-docker/actions/workflows/check-latest-csgo-version.yml/badge.svg">
+ </a>
 </p>
 
 
@@ -264,7 +267,9 @@ Of the below fields, only the team1 and team2 fields are actually required. Reas
 
 ## 5. Keeping the image up to date
 
-The script `image_update/image_updater_remote.sh` is run on a server as a `cron` job, to periodically check for CS:GO updates.
+The workflow ["Uses latest CS:GO version"](https://github.com/theo-brown/csgo-docker/actions/workflows/check-csgo-version.yml) checks that the version of CSGO on the image in the DockerHub registry matches the latest CS:GO patch released on Steam.
+
+The script `image_update/update-image-remote.sh` is run on a server as a `cron` job, to periodically check for CS:GO updates.
 If the version of CS:GO installed on the image differs from the latest version of CS:GO according the Steam Web API, then the script `server-scripts/server_update.sh` is run within the container.
 The changes are committed to the image, the image label updated to show the latest version of CS:GO installed, and the image pushed to the registry.
 
@@ -275,6 +280,6 @@ If you urgently need to use the image without waiting for the registry image to 
 1. Do nothing, and continue to start containers as you would normally. As the CS:GO server is launched with the `-autoupdate` flag, it will check for updates on launch.
 The downside of this approach is that every new container instance will have to redownload the update, leading to slower start-up times.
 
-2. Update your local copy of the image using `image_update/image_updater_local.sh`. This ensures that every container will run with an up-to-date copy of CS:GO.
+2. Update your local copy of the image using `image_update/update-image-local.sh`. This ensures that every container will run with an up-to-date copy of CS:GO.
 
 The image updater scripts use `jq` to parse JSON objects from the Steam Web API. Install it using `sudo apt install jq`.

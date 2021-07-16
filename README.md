@@ -42,7 +42,9 @@
 
     4.2 [Team schema](#42-team-schema)
 
-5. [Keeping the image up to date](#5-keeping-the-image-up-to-date)
+5. [FFA-DM, Aim Map, and Practice configs](#5-ffa-dm-aim-map-and-practice-configs)
+
+6. [Keeping the image up to date](#6-keeping-the-image-up-to-date)
 
 
 ## 1. Introduction
@@ -265,12 +267,26 @@ Of the below fields, only the team1 and team2 fields are actually required. Reas
 | `series_score` | Current score in the series. This can be used to give a team a map advantage (default: 0)
 
 
-## 5. Keeping the image up to date
+## 5. FFA-DM, Aim Map and Practice configs
 
-The workflow ["Uses latest CS:GO version"](https://github.com/theo-brown/csgo-docker/actions/workflows/check-csgo-version.yml) checks that the version of CSGO on the image in the DockerHub registry matches the latest CS:GO patch released on Steam.
+The image also contains three configs, used for custom modes when you're not using Get5 to manage matches.
+The config files overwrite the default Deathmatch, Casual and Training modes, and so can be selected using the `game_type` and `game_mode` convars.
 
-The script `image_update/update-image-remote.sh` is run on a server as a `cron` job, to periodically check for CS:GO updates.
-If the version of CS:GO installed on the image differs from the latest version of CS:GO according the Steam Web API, then the script `server-scripts/server_update.sh` is run within the container.
+
+| Mode name               | CSGO Game mode | Game mode vars              | File                           | Description                                                     |
+| :---------------------- | :------------- | :-------------------------- | :----------------------------- | :-------------------------------------------------------------- |
+| Free-for-all Deathmatch | deathmatch     | game_type 1 <br>game_mode 2 | gamemode_deathmatch_server.cfg | Teammates are enemies, random spawns                            |
+| Aim Map                 | casual         | game_type 0 <br>game_mode 0 | gamemode_casual_server.cfg     | No weapon drops, only AK47 and Desert Eagle, respawn on death   | 
+| Practice                | training       | game_type 2 <br>game_mode 0 | gamemode_training_server.cfg   | Unlimited time, money, ammo, grenades, and buy anywhere         |
+
+
+## 6. Keeping the image up to date
+
+The workflow ["Uses latest CS:GO version"](https://github.com/theo-brown/csgo-docker/actions/workflows/check-csgo-version.yml) checks that the version of CSGO on the image in the DockerHub registry 
+matches the latest CS:GO patch released on Steam.
+
+The script `image_update/update-image-remote.sh` is run on a server as a `cron` job, to periodically check for CS:GO updates and keep the registry image up to date.
+If the version of CS:GO installed on the image differs from the latest version of CS:GO according the Steam Web API, then the script `server-scripts/server-update.sh` is run within the container.
 The changes are committed to the image, the image label updated to show the latest version of CS:GO installed, and the image pushed to the registry.
 
 Consequently, the image on the registry should always be running the latest version of CS:GO. The update-push process can take a while, so it may be a little delayed.

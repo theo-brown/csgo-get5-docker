@@ -213,6 +213,7 @@ All possible environment variables are displayed in the table below.
 | WORKSHOP_START_MAP       | `+workshop_start_map`       | Get the latest version of the workshop map with the specified ID and set it as the starting map (default: not set)
 | WORKSHOP_AUTHKEY         | `-authkey`                  | Set a Steam Web API authkey, required to download maps from the workshop. Generate one [here](https://steamcommunity.com/dev/apikey) (default: not set).
 | AUTOEXEC                 | `+exec`                     | A `.cfg` file to be executed on startup. Note anything you set here will probably be overwritten by Get5 when a match is loaded, so it's fairly useless (default: not set).
+| CUSTOM_ARGS              |                             | A string containing any additional launch options to pass to the dedicated server (default: not set)
 | MATCH_CONFIG             |                             | If set to a valid JSON match config, the server starts with the config loaded. If not set, the server starts with `get5_check_auths 0`. [See below](#using-get5-for-match-creation) for more on using Get5. (Default: not set.)
 
 

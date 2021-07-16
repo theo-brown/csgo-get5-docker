@@ -93,12 +93,17 @@ if [ -v AUTOEXEC ]
 then
     ARGS="$ARGS +exec $AUTOEXEC"
 fi
+if [ -v CUSTOM_ARGS ]
+then
+    ARGS="$ARGS $CUSTOM_ARGS"
+fi
 if [ -v MATCH_CONFIG ]
 then
     echo $MATCH_CONFIG > $CSGO_DIR/csgo/match_config.json
 else
     echo 'get5_check_auths 0' > $CSGO_DIR/csgo/cfg/sourcemod/get5.cfg
 fi
+
 
 #################
 # Launch server #

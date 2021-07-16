@@ -1,5 +1,5 @@
 DOCKER_REPO="theobrown/csgo-docker"
-GHCR_REPO="ghcr.io/theo-brown/csgo-docker"
+#GHCR_REPO="ghcr.io/theo-brown/csgo-docker"
 TOKEN_URL="https://auth.docker.io/token?service=registry.docker.io&scope=repository:$DOCKER_REPO:pull"
 HEADER="Accept: application/vnd.docker.distribution.manifest.v2+json"
 MANIFEST_URL="https://registry-1.docker.io/v2/$DOCKER_REPO/manifests/latest"
@@ -36,14 +36,14 @@ then
     docker commit --change "LABEL csgo_version=$LATEST_CSGO_VERSION image_version=$REGISTRY_IMAGE_VERSION" csgo_update_container "$DOCKER_REPO:latest"
     docker image tag "$DOCKER_REPO:latest" "$DOCKER_REPO:$NEW_TAG"
 
-    docker image tag "$DOCKER_REPO:latest" "$GHCR_REPO:latest"
-    docker image tag "$DOCKER_REPO:latest" "$GHCR_REPO:$NEW_TAG"
+    #docker image tag "$DOCKER_REPO:latest" "$GHCR_REPO:latest"
+    #docker image tag "$DOCKER_REPO:latest" "$GHCR_REPO:$NEW_TAG"
 
     echo "Pushing to registry..."
     docker push "$DOCKER_REPO:latest"
     docker push "$DOCKER_REPO:$NEW_TAG"
-    docker push "$GHCR_REPO:latest"
-    docker push "$GHCR_REPO:$NEW_TAG"
+    #docker push "$GHCR_REPO:latest"
+    #docker push "$GHCR_REPO:$NEW_TAG"
 
     echo "Deleting container..."
     docker container rm csgo_update_container

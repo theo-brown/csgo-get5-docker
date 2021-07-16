@@ -1,7 +1,7 @@
 ######################
 # Set launch options #
 ######################
-ARGS="-game csgo -console -autoupdate -usercon $ARGS"
+ARGS="-game csgo -console -autoupdate -usercon"
 
 if [ -v SERVER_TOKEN ]
 then
@@ -104,4 +104,5 @@ fi
 # Launch server #
 #################
 cd $CSGO_DIR
-./srcds_run $ARGS
+echo "srcds_run $ARGS"
+srcds_run $ARGS

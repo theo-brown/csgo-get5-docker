@@ -63,12 +63,12 @@ This Docker image draws heavily on [CM2Walki's CSGO Docker image](https://github
 
 1. Download the image from [Docker hub](https://hub.docker.com/r/theobrown/csgo-server):
 ```
-docker pull theobrown/csgo-server:latest
+docker pull theobrown/csgo-docker:latest
 ```
 
 2. Launch a container:
 ```
-docker run --network=host theobrown/csgo-server:latest
+docker run --network=host theobrown/csgo-docker:latest
 ```
 
 ### 2.2 Recommended Docker launch arguments
@@ -83,7 +83,7 @@ At minimum, you'll probably want to launch the container with the following envi
 
 * `-e GOTV_PASSWORD=<another password>`: set the GOTV password.
 
-* `-e SERVER_TOKEN=<your GSLT>`: set a Game Server Login Token so that the server can be connected to by non-LAN clients (see [below](#environment-variables)).
+* `-e SERVER_TOKEN=<your GSLT>`: set a Game Server Login Token so that the server can be connected to by non-LAN clients (see [below](#3-environment-variables)).
 
 If you want to start the server with a loaded config, set:
 
@@ -103,7 +103,7 @@ docker run --network=host \
  -e RCON_PASSWORD=adminpass \
  -e GOTV_PASSWORD=gotvpass \
  -e SERVER_TOKEN=A1B2C3D4E5F6G7H8I9J0 \
- theobrown/csgo-server:latest
+ theobrown/csgo-docker:latest
 ```
 
 Any player can connect to the server and type `!get5` in chat to set up a match.
@@ -146,7 +146,7 @@ docker run --network=host \
                                          186841562108230104: 'electronic', \
                                          726408891643982724: 'Perfecto', \
                                          512316566954794515: 'flamie'}}}" \
- theobrown/csgo-server:latest
+ theobrown/csgo-docker:latest
 ```
 
 #### 2.3.3 Starting a server with a match config with no veto
@@ -179,7 +179,7 @@ docker run --network=host \
                                          186841562108230104: 'electronic', \
                                          726408891643982724: 'Perfecto', \
                                          512316566954794515: 'flamie'}}}" \
- theobrown/csgo-server:latest
+ theobrown/csgo-docker:latest
 ```
 
 

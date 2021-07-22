@@ -15,9 +15,9 @@ DIGEST=$(curl -s -H "$HEADER" -H "$AUTH_HEADER" "$MANIFEST_URL" | jq -r .config.
 METADATA=$(curl -s -L -H "$HEADER" -H "$AUTH_HEADER" "https://registry-1.docker.io/v2/$DOCKER_REPO/blobs/$DIGEST")
 
 # Extract version information from image metadata
-REGISTRY_CSGO_VERSION=$(echo $METADATA | jq '.config.Labels.csgo_version | tonumber')
+REGISTRY_CSGO_VERSION=$(echo $METADATA | jq -r .config.Labels.csgo_version)
 echo "CS:GO version in $DOCKER_REPO:latest = $REGISTRY_CSGO_VERSION"
-REGISTRY_IMAGE_VERSION=$(echo $METADATA | jq .config.Labels.image_version)
+REGISTRY_IMAGE_VERSION=$(echo $METADATA | jq -r .config.Labels.image_version)
 
 # Check the CSGO version of the registry image against the latest version in the Steam API
 VERSION_CHECK=$(curl -s "http://api.steampowered.com/ISteamApps/UpToDateCheck/v1?appid=730&version=$REGISTRY_CSGO_VERSION" | jq .response)
@@ -25,8 +25,8 @@ VERSION_CHECK=$(curl -s "http://api.steampowered.com/ISteamApps/UpToDateCheck/v1
 # If it's not up to date, update it
 if ! $(echo $VERSION_CHECK | jq .up_to_date)
 then
-    LATEST_CSGO_VERSION=$(echo $VERSION_CHECK | jq .required_version)
-    NEW_TAG="$IMAGE_VERSION-$LATEST_CSGO_VERSION"
+    LATEST_CSGO_VERSION=$(echo $VERSION_CHECK | jq -r .required_version)
+    NEW_TAG="$REGISTRY_IMAGE_VERSION-$LATEST_CSGO_VERSION"
     echo "Latest CS:GO version = $LATEST_CSGO_VERSION"
 
     echo "Launching container..."
@@ -46,7 +46,9 @@ then
     #docker push "$GHCR_REPO:$NEW_TAG"
 
     echo "Deleting container..."
-    docker container rm csgo_update_container
-fi
+    docker rm -f csgo_update_container
 
-echo "CS:GO is up to date (version $REGISTRY_CSGO_VERSION)."
+    echo "CS:GO is now up to date (version $LATEST_CSGO_VERSION)."
+else
+    echo "CS:GO is already up to date (version $REGISTRY_CSGO_VERSION)."
+fi

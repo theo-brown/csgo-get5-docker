@@ -71,14 +71,14 @@ RUN useradd -m user \
 
 # Download install script and install csgo
 RUN su user -c \
-     "wget -q -O $HOME_DIR/server_update.sh $SOURCE_URL/server-scripts/server_update.sh \
-      && chmod u+x $HOME_DIR/server_update.sh \
-      && bash $HOME_DIR/server_update.sh"
+     "wget -q -O $HOME_DIR/server-update.sh $SOURCE_URL/server-scripts/server-update.sh \
+      && chmod u+x $HOME_DIR/server-update.sh \
+      && bash $HOME_DIR/server-update.sh"
 
 # Download launch script
 RUN su user -c \
-     "wget -q -O $HOME_DIR/server_launch.sh $SOURCE_URL/server-scripts/server_launch.sh \
-      && chmod u+x $HOME_DIR/server_launch.sh" \
+     "wget -q -O $HOME_DIR/server-launch.sh $SOURCE_URL/server-scripts/server-launch.sh \
+      && chmod u+x $HOME_DIR/server-launch.sh" \
     # Tidy up
     # Remove all unnecessary installed programs
     # Clear cache
@@ -113,4 +113,4 @@ RUN INSTALLED_VERSION="$(sed -rn 's/PatchVersion=([0-9]+).([0-9]+).([0-9]+).([0-
 # Run CSGO
 USER user
 WORKDIR $HOME_DIR
-CMD ["bash", "server_launch.sh"]
+CMD ["bash", "server-launch.sh"]

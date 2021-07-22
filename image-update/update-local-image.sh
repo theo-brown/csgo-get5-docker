@@ -19,7 +19,7 @@ then
     LATEST_CSGO_VERSION=$(echo $JSON | jq -r .required_version)
     echo "Latest CS:GO version: $LATEST_CSGO_VERSION"
     echo "Launching container..."
-    docker run --name=csgo_update_container -it $DOCKER_IMAGE bash /home/user/server_update.sh
+    docker run --name=csgo_update_container -it $DOCKER_IMAGE bash /home/user/server-update.sh
     echo "Committing changes..."
     docker commit --change "LABEL csgo_version=$LATEST_CSGO_VERSION" csgo_update_container $DOCKER_IMAGE
     echo "Deleting container..."

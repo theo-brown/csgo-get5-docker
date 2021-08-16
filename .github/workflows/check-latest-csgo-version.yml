@@ -9,28 +9,31 @@ on:
 
 env:
   DOCKER_REPO: 'theobrown/csgo-docker'
-  HEADER: 'Accept: application/vnd.docker.distribution.manifest.v2+json'
 
 jobs:
   check-csgo-version:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Check Docker CSGO version against Steam API
-      run: |
-       export TOKEN=$(curl -s "https://auth.docker.io/token?service=registry.docker.io&scope=repository:$DOCKER_REPO:pull" | jq -r '.token')
-       export AUTH_HEADER="Authorization: Bearer $TOKEN"
-       export DIGEST=$(curl -s -H "$HEADER" -H "$AUTH_HEADER" "https://registry-1.docker.io/v2/$DOCKER_REPO/manifests/latest" | jq -r .config.digest)
-       export METADATA=$(curl -s -L -H "$HEADER" -H "$AUTH_HEADER" "https://registry-1.docker.io/v2/$DOCKER_REPO/blobs/$DIGEST")
-       export INSTALLED_CSGO_VERSION=$(echo $METADATA | jq '.config.Labels.csgo_version | tonumber')
-       echo "Installed CS:GO version: $INSTALLED_CSGO_VERSION"
-       export VERSION_CHECK=$(curl -s "http://api.steampowered.com/ISteamApps/UpToDateCheck/v1?appid=730&version=$INSTALLED_CSGO_VERSION" | jq .response)
-       if $(echo $VERSION_CHECK | jq .up_to_date)
-       then 
-        echo "$DOCKER_REPO:latest contains the latest CS:GO version ($INSTALLED_CSGO_VERSION)."
-        exit 0
-       else
-        export LATEST_CSGO_VERSION=$(echo $VERSION_CHECK | jq .required_version)
-        echo "$DOCKER_REPO:latest contains an outdated CS:GO version (installed: $INSTALLED_CSGO_VERSION / latest: $LATEST_CSGO_VERSION)."
-        exit 1
-       fi
+      - name: Fetch metadata from DockerHub
+        id: fetch-metadata
+        uses: theo-brown/fetch-dockerhub-metadata@v1
+        with:
+          repository: ${{ env.DOCKER_REPO }}
+          tag: latest
+      - name: Get installed CSGO version from metadata
+        id: csgo-version
+        run: |
+          INSTALLED_VERSION=$(echo '${{ steps.fetch-metadata.outputs.labels }}' | jq '.csgo_version | tonumber')
+          echo "CSGO version installed on DockerHub: $INSTALLED_VERSION"
+          echo "::set-output name=version::$INSTALLED_VERSION"
+      - name: Check CSGO version against Steam API
+        run: |
+          VERSION_CHECK=$(curl -s "http://api.steampowered.com/ISteamApps/UpToDateCheck/v1?appid=730&version=${{ steps.csgo-version.outputs.version }}" | jq .response)
+          if [ $(echo $VERSION_CHECK | jq .up_to_date) = true ]
+          then
+            echo "$DOCKER_REPO:latest contains the latest CS:GO version (${{ steps.csgo-version.outputs.version }})."
+            exit 0
+          else
+            echo "::error::$DOCKER_REPO:latest contains an outdated CS:GO version \
+                  (installed: ${{ steps.csgo-version.outputs.version }} / latest: $(echo $VERSION_CHECK | jq .required_version))."
+          fi

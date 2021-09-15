@@ -15,7 +15,7 @@ ENV HOME_DIR=/home/user
 ENV STEAMCMD_DIR=$HOME_DIR/Steam \
     CSGO_DIR=$HOME_DIR/csgo-server \
     # URLs for downloads:
-    SOURCE_URL=https://raw.githubusercontent.com/theo-brown/csgo-docker/main \
+    CSGODOCKER_URL=https://raw.githubusercontent.com/theo-brown/csgo-docker/main \
     STEAMCMD_URL=https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz \
     METAMOD_URL=https://mms.alliedmods.net/mmsdrop/1.11/mmsource-1.11.0-git1144-linux.tar.gz \
     SOURCEMOD_URL=https://sm.alliedmods.net/smdrop/1.10/sourcemod-1.10.0-git6504-linux.tar.gz \
@@ -71,13 +71,13 @@ RUN useradd -m user \
 
 # Download install script and install csgo
 RUN su user -c \
-     "wget -q -O $HOME_DIR/server-update.sh $SOURCE_URL/server-scripts/server-update.sh \
+     "wget -q -O $HOME_DIR/server-update.sh $CSGODOCKER_URL/server-scripts/server-update.sh \
       && chmod u+x $HOME_DIR/server-update.sh \
       && bash $HOME_DIR/server-update.sh"
 
 # Download launch script
 RUN su user -c \
-     "wget -q -O $HOME_DIR/server-launch.sh $SOURCE_URL/server-scripts/server-launch.sh \
+     "wget -q -O $HOME_DIR/server-launch.sh $CSGODOCKER_URL/server-scripts/server-launch.sh \
       && chmod u+x $HOME_DIR/server-launch.sh" \
     # Tidy up
     # Remove all unnecessary installed programs

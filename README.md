@@ -42,19 +42,24 @@
 
     4.2 [Team schema](#42-team-schema)
 
-5. [FFA-DM, Aim Map, and Practice configs](#5-ffa-dm-aim-map-and-practice-configs)
+5. [Keeping the image up to date](#5-keeping-the-image-up-to-date)
 
-6. [Keeping the image up to date](#6-keeping-the-image-up-to-date)
+   5.1 [Updates on launch](#51-updates-on-launch)
+
+   5.2 [Scheduled and manual updates](#52-scheduled-and-manual-updates)
 
 
 ## 1. Introduction
 
-This image aims to provide a CS:GO server that can **run a competitive match straight out of the box**, with no setup required beyond setting the match parameters.
+This image aims to provide a CS:GO server that can **run a competitive match straight out of the box**, with no setup
+required beyond setting the match parameters.
 
-Everything that can be changed about the server can be **set using environment variables** passed to Docker on container creation.
+Everything that can be changed about the server can be **set using environment variables** passed to Docker on container
+creation.
 
-[Get5](https://github.com/splewis/get5) is used to set up and manage the match - for further information as to how it works please read
-[Using Get5 for match creation](#using-get5-for-match-creation). If you need more detail have a look at the [Get5 documentation](https://github.com/splewis/get5).
+[Get5](https://github.com/splewis/get5) is used to set up and manage the match - for further information as to how it 
+works please read [Using Get5 for match creation](#using-get5-for-match-creation). If you need more detail have a look 
+at the [Get5 documentation](https://github.com/splewis/get5).
 
 This Docker image draws heavily on [CM2Walki's CSGO Docker image](https://github.com/CM2Walki/CSGO).
 
@@ -77,7 +82,8 @@ docker run --network=host theobrown/csgo-docker:latest
 
 At minimum, you'll probably want to launch the container with the following environment variables set:
 
-* `--network=host`: use the host machine's ports and IP address, rather than running within an isolated Docker network that's not visible to the outside world.
+* `--network=host`: use the host machine's ports and IP address, rather than running within an isolated Docker 
+  network that's not visible to the outside world.
 
 * `-e PASSWORD=<some password>`: set the password to connect to the server.
 
@@ -85,7 +91,8 @@ At minimum, you'll probably want to launch the container with the following envi
 
 * `-e GOTV_PASSWORD=<another password>`: set the GOTV password.
 
-* `-e SERVER_TOKEN=<your GSLT>`: set a Game Server Login Token so that the server can be connected to by non-LAN clients (see [below](#3-environment-variables)).
+* `-e SERVER_TOKEN=<your GSLT>`: set a Game Server Login Token so that the server can be connected to by 
+  non-LAN clients (see [below](#3-environment-variables)).
 
 If you want to start the server with a loaded config, set:
 
@@ -95,7 +102,8 @@ If you want to start the server with a loaded config, set:
 
 #### 2.3.1 Starting a server with no match config
 
-Start a server using the host machine's IP address, with the specified port, GOTV port, password, RCON password, GOTV password, and (made up) server token (generate a real one [here](https://steamcommunity.com/dev/managegameservers)).
+Start a server using the host machine's IP address, with the specified port, GOTV port, password, RCON password,
+GOTV password, and (made up) server token (generate a real one [here](https://steamcommunity.com/dev/managegameservers)).
 
 ```
 docker run --network=host \
@@ -110,7 +118,8 @@ docker run --network=host \
 
 Any player can connect to the server and type `!get5` in chat to set up a match.
 
-If the host machine had public IP `251.131.41.166` then running the following command in the CS:GO in-game console would connect to the server:
+If the host machine had public IP `251.131.41.166` then running the following command in the CS:GO in-game console would
+connect to the server:
 ```
 connect 251.131.41.166:1234; password mypass 
 ```
@@ -120,9 +129,10 @@ Running the following command in the CS:GO in-game console would connect to the 
 connect 251.131.41.166:1235; password gotvpass
 ```
 
-#### 2.3.2 Starting a server with a match config with veto
+#### 2.3.2 Starting a server with a match config and in-server veto
 
-Start a server using the host machine's IP address, the default port, the specified password, RCON password, GOTV password, and server token, and load the given Get5 config.
+Start a server using the host machine's IP address, the default port, the specified password, RCON password, GOTV 
+password, and server token, and load the given Get5 config.
 Once the players are connected and ready up, the map veto will start. Once the veto is complete, the game will begin.
 ```
 docker run --network=host \
@@ -151,9 +161,10 @@ docker run --network=host \
  theobrown/csgo-docker:latest
 ```
 
-#### 2.3.3 Starting a server with a match config with no veto
+#### 2.3.3 Starting a server with a match config with preset maps
 
-Start a server using the host machine's IP address, the default port, the specified password, RCON password, GOTV password, and server token, and load the given Get5 config.
+Start a server using the host machine's IP address, the default port, the specified password, RCON password, GOTV 
+password, and server token, and load the given Get5 config.
 Once the players are connected and ready up, the game will begin.
 
 ```
@@ -189,7 +200,8 @@ docker run --network=host \
 
 Setting environment variables when starting a container allows you to manipulate the launch options of the server.
 
-For example, `docker run -e PASSWORD=1234 theobrown/csgo-server:latest` will start a new server with password `1234` by launching the server with `+sv_password 1234`. 
+For example, `docker run -e PASSWORD=1234 theobrown/csgo-server:latest` will start a new server with password `1234` 
+by launching the server with `+sv_password 1234`. 
 
 All possible environment variables are displayed in the table below.
 
@@ -213,13 +225,15 @@ All possible environment variables are displayed in the table below.
 | WORKSHOP_START_MAP       | `+workshop_start_map`       | Get the latest version of the workshop map with the specified ID and set it as the starting map (default: not set)
 | WORKSHOP_AUTHKEY         | `-authkey`                  | Set a Steam Web API authkey, required to download maps from the workshop. Generate one [here](https://steamcommunity.com/dev/apikey) (default: not set).
 | AUTOEXEC                 | `+exec`                     | A `.cfg` file to be executed on startup. Note anything you set here will probably be overwritten by Get5 when a match is loaded, so it's fairly useless (default: not set).
+| UPDATE_ON_LAUNCH         | `-autoupdate`               | 1: Check for CS:GO updates on container launch, 0: do not check for updates. (default: 1)
 | CUSTOM_ARGS              |                             | A string containing any additional launch options to pass to the dedicated server (default: not set)
 | MATCH_CONFIG             |                             | If set to a valid JSON match config, the server starts with the config loaded. If not set, the server starts with `get5_check_auths 0`. [See below](#using-get5-for-match-creation) for more on using Get5. (Default: not set.)
 
 
-Launch options are appended to the following set of basic launch options that are passed as arguments to `srcds`, the dedicated server program:
+Launch options are appended to the following set of basic launch options that are passed as arguments to `srcds`, the 
+dedicated server program:
 ```
--game csgo -console -autoupdate -usercon
+-game csgo -console -usercon -steam_dir $STEAMCMD_DIR -steamcmd_script $STEAMCMD_DIR/steamcmd.sh
 ```
 
 
@@ -227,16 +241,20 @@ Launch options are appended to the following set of basic launch options that ar
 
 *This section is mostly directly copied from [Get5's README](https://github.com/splewis/get5/blob/master/README.md)*
 
-Get5 uses JSON-formatted objects to create matches. These set the players who are allowed on the server, the maps to be played, the sides, etc.
+Get5 uses JSON-formatted objects to create matches. These set the players who are allowed on the server, the maps to be 
+played, the sides, etc.
 
-The image can start a container with or without a match config, by setting the optional environment variable `MATCH_CONFIG` or leaving it unset.
+The image can start a container with or without a match config, by setting the optional environment variable 
+`MATCH_CONFIG` or leaving it unset.
 
 If started with a match config, only the players specified in the config will be able to connect.
-If started with no match config, then any player can connect, and once connected the command `get5_creatematch` needs to be run in console (or `!get5` sent in chat) to set up a match.
+If started with no match config, then any player can connect, and once connected the command `get5_creatematch` needs to
+be run in console (or `!get5` sent in chat) to set up a match.
 
 ### 4.1 Match Config Schema
 
-Of the below fields, only the team1 and team2 fields are actually required. Reasonable defaults are used for other fields (bo3 series, 5v5, empty strings for team names, etc.)
+Of the below fields, only the team1 and team2 fields are actually required. Reasonable defaults are used for other
+fields (bo3 series, 5v5, empty strings for team names, etc.)
 
 | Element                    | Description 
 | :------------------------- | :--------------------- 
@@ -264,39 +282,49 @@ Of the below fields, only the team1 and team2 fields are actually required. Reas
 | `tag`          | Team tag - replaces client clan tags (optional)
 | `flag`         | 2 letter country code to set the team's flag (optional)
 | `logo`         | Team logo (optional)
-| `players`      | Either an array of steamids or, to override in-game player names, a dictionary of steamids to names (**required**)
+| `players`      | Either an array of steamIDs or, to override in-game player names, a dictionary of steamIDs to names (**required**)
 | `series_score` | Current score in the series. This can be used to give a team a map advantage (default: 0)
 
 
-## 5. FFA-DM, Aim Map and Practice configs
+## 5. Keeping the image up to date
 
-The image also contains three configs, used for custom modes when you're not using Get5 to manage matches.
-The config files overwrite the default Deathmatch, Casual and Training modes, and so can be selected using the `game_type` and `game_mode` convars.
+### 5.1 Updates on launch
 
+By default, when a container is started from the image, it checks for CS:GO updates and installs them. Note that this 
+will not modify your local copy of the image, so future containers will also have to download the update.
+To disable checking for updates on launch, set the environment variable `UPDATE_ON_LAUNCH` to be `0`.
 
-| Mode name               | CSGO Game mode | Game mode vars              | File                           | Description                                                     |
-| :---------------------- | :------------- | :-------------------------- | :----------------------------- | :-------------------------------------------------------------- |
-| Free-for-all Deathmatch | deathmatch     | game_type 1 <br>game_mode 2 | gamemode_deathmatch_server.cfg | Teammates are enemies, random spawns                            |
-| Aim Map                 | casual         | game_type 0 <br>game_mode 0 | gamemode_casual_server.cfg     | No weapon drops, only AK47 and Desert Eagle, respawn on death   | 
-| Practice                | training       | game_type 2 <br>game_mode 0 | gamemode_training_server.cfg   | Unlimited time, money, ammo, grenades, and buy anywhere         |
+### 5.2 Scheduled and manual updates
 
-
-## 6. Keeping the image up to date
-
-The workflow ["Uses latest CS:GO version"](https://github.com/theo-brown/csgo-docker/actions/workflows/check-csgo-version.yml) checks that the version of CSGO on the image in the DockerHub registry 
-matches the latest CS:GO patch released on Steam.
-
-The script `image_update/update-image-remote.sh` is run on a server as a `cron` job, to periodically check for CS:GO updates and keep the registry image up to date.
-If the version of CS:GO installed on the image differs from the latest version of CS:GO according the Steam Web API, then the script `server-scripts/server-update.sh` is run within the container.
-The changes are committed to the image, the image label updated to show the latest version of CS:GO installed, and the image pushed to the registry.
-
-Consequently, the image on the registry should always be running the latest version of CS:GO. The update-push process can take a while, so it may be a little delayed.
-
-If you urgently need to use the image without waiting for the registry image to update or to avoid re-downloading from the registry, you have two options.
-
-1. Do nothing, and continue to start containers as you would normally. As the CS:GO server is launched with the `-autoupdate` flag, it will check for updates on launch.
-The downside of this approach is that every new container instance will have to redownload the update, leading to slower start-up times.
-
-2. Update your local copy of the image using `image_update/update-image-local.sh`. This ensures that every container will run with an up-to-date copy of CS:GO.
+For ensuring that an image contains the latest CS:GO version, two scripts are provided, one for local images and one for
+the image in the DockerHub repo.
+These can be run manually or at scheduled intervals. They run the following steps:
+1. Check the version of CS:GO installed on the image 
+2. If the version differs from the latest version of CS:GO according the Steam Web API, then a container is spawned 
+   running `server-scripts/server-update.sh`, which installs CS:GO updates
+3. The changes to the container are committed to the image and the image label updated to show the version of CS:GO 
+   installed 
+4. The image is pushed to the registry (`image_update/update-image-remote.sh` only)
 
 The image updater scripts use `jq` to parse JSON objects from the Steam Web API. Install it using `sudo apt install jq`.
+
+#### 5.2.1 Local version
+
+To keep your local image up to date, you can schedule a `cron` job to run `updated-local-image.sh` at given intervals.
+For example:
+
+1. Run `crontab -e` to edit the crontab for the current user 
+2. Add the following line to the opened file: 
+```bash
+10 * * * * /home/myuser/csgo-docker/update-local-image.sh > /home/myuser/csgo-docker/cron.log
+```
+This will run the script `/home/myuser/csgo-docker/update-local-image.sh ` at 10 minutes past the hour every hour, and 
+log the output to `/home/myuser/csgo-docker/cron.log`.
+
+#### 5.2.2 Version on DockerHub
+
+The workflow ["Uses latest CS:GO version"](https://github.com/theo-brown/csgo-docker/actions/workflows/check-csgo-version.yml)
+checks that the version of CSGO on the image in the DockerHub registry matches the latest CS:GO patch released on Steam.
+
+The script `image_update/update-image-remote.sh` is run remotely to periodically check for CS:GO updates and keep the 
+registry image up to date. The update-push process can take a while, so it may be a little delayed.

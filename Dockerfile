@@ -99,9 +99,7 @@ EXPOSE $PORT/tcp \
 # To get the version of the latest CSGO patch, run
 # curl -s "http://api.steampowered.com/ISteamApps/UpToDateCheck/v1?appid=730&version=0" | jq .response.required_version
 ARG CSGO_VERSION=13795
-ARG IMAGE_VERSION="1.0.0"
-LABEL csgo_version=$CSGO_VERSION \
-      image_version=$IMAGE_VERSION
+LABEL csgo_version=$CSGO_VERSION
 
 # Check that the installed version of CSGO matches the label of this image
 RUN INSTALLED_VERSION="$(sed -rn 's/PatchVersion=([0-9]+).([0-9]+).([0-9]+).([0-9]+)/\1\2\3\4/p' $CSGO_DIR/csgo/steam.inf)" \

@@ -22,7 +22,9 @@ ENV STEAMCMD_DIR=$HOME_DIR/Steam \
     GET5_URL=https://github.com/splewis/get5/releases/download/0.7.2/get5_0.7.2.zip \
     # Set default ports to expose
     PORT=27015 \
-    GOTV_PORT=27020 
+    GOTV_PORT=27020 \
+    # Set default args
+    UPDATE_ON_LAUNCH=1
 
 # Set up filesystem
 #    Add a non-root user

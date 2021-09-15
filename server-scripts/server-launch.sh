@@ -1,7 +1,8 @@
 ######################
 # Set launch options #
 ######################
-ARGS="-game csgo -console -autoupdate -usercon"
+ARGS="-game csgo -console -usercon -steam_dir $STEAMCMD_DIR -steamcmd_script $STEAMCMD_DIR/steamcmd.sh"
+
 
 if [ -v SERVER_TOKEN ]
 then
@@ -92,6 +93,10 @@ fi
 if [ -v AUTOEXEC ]
 then
     ARGS="$ARGS +exec $AUTOEXEC"
+fi
+if [ $UPDATE_ON_LAUNCH -eq 1 ]
+then
+    ARGS="$ARGS -autoupdate"
 fi
 if [ -v CUSTOM_ARGS ]
 then

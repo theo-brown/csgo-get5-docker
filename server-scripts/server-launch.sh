@@ -115,4 +115,4 @@ fi
 #################
 cd $CSGO_DIR
 echo "srcds_run $ARGS"
-srcds_run $ARGS
+./srcds_run $ARGS

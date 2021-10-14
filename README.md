@@ -3,7 +3,7 @@
  <img src=".readme/docker.png" height=50px align="absmiddle">
 </h1>
 <h1 align="center">
- csgo-docker
+ csgo-get5-docker
 </h1>
 <p align="center">
  <em>
@@ -12,12 +12,12 @@
 </p>
 
 <p align="center">
- <a href="https://github.com/theo-brown/csgo-docker/blob/main/LICENSE">
-  <img src="https://img.shields.io/github/license/theo-brown/csgo-docker">
+ <a href="https://github.com/theo-brown/csgo-get5-docker/blob/main/LICENSE">
+  <img src="https://img.shields.io/github/license/theo-brown/csgo-get5-docker">
  </a>
  <img src="https://img.shields.io/maintenance/yes/2021">
- <a href="https://github.com/theo-brown/csgo-docker/actions/workflows/check-latest-csgo-version.yml">
-  <img src="https://github.com/theo-brown/csgo-docker/actions/workflows/check-latest-csgo-version.yml/badge.svg">
+ <a href="https://github.com/theo-brown/csgo-get5-docker/actions/workflows/check-latest-csgo-version.yml">
+  <img src="https://github.com/theo-brown/csgo-get5-docker/actions/workflows/check-latest-csgo-version.yml/badge.svg">
  </a>
 </p>
 
@@ -70,12 +70,12 @@ This Docker image draws heavily on [CM2Walki's CSGO Docker image](https://github
 
 1. Download the image from [Docker hub](https://hub.docker.com/r/theobrown/csgo-server):
 ```
-docker pull theobrown/csgo-docker:latest
+docker pull theobrown/csgo-get5-docker:latest
 ```
 
 2. Launch a container:
 ```
-docker run --network=host theobrown/csgo-docker:latest
+docker run --network=host theobrown/csgo-get5-docker:latest
 ```
 
 ### 2.2 Recommended Docker launch arguments
@@ -113,7 +113,7 @@ docker run --network=host \
  -e RCON_PASSWORD=adminpass \
  -e GOTV_PASSWORD=gotvpass \
  -e SERVER_TOKEN=A1B2C3D4E5F6G7H8I9J0 \
- theobrown/csgo-docker:latest
+ theobrown/csgo-get5-docker:latest
 ```
 
 Any player can connect to the server and type `!get5` in chat to set up a match.
@@ -158,7 +158,7 @@ docker run --network=host \
                                          186841562108230104: 'electronic', \
                                          726408891643982724: 'Perfecto', \
                                          512316566954794515: 'flamie'}}}" \
- theobrown/csgo-docker:latest
+ theobrown/csgo-get5-docker:latest
 ```
 
 #### 2.3.3 Starting a server with a match config with preset maps
@@ -192,7 +192,7 @@ docker run --network=host \
                                          186841562108230104: 'electronic', \
                                          726408891643982724: 'Perfecto', \
                                          512316566954794515: 'flamie'}}}" \
- theobrown/csgo-docker:latest
+ theobrown/csgo-get5-docker:latest
 ```
 
 
@@ -316,14 +316,14 @@ For example:
 1. Run `crontab -e` to edit the crontab for the current user 
 2. Add the following line to the opened file: 
 ```bash
-10 * * * * /home/myuser/csgo-docker/update-local-image.sh > /home/myuser/csgo-docker/cron.log
+10 * * * * /home/myuser/csgo-get5-docker/update-local-image.sh > /home/myuser/csgo-get5-docker/cron.log
 ```
-This will run the script `/home/myuser/csgo-docker/update-local-image.sh ` at 10 minutes past the hour every hour, and 
-log the output to `/home/myuser/csgo-docker/cron.log`.
+This will run the script `/home/myuser/csgo-get5-docker/update-local-image.sh ` at 10 minutes past the hour every hour, and 
+log the output to `/home/myuser/csgo-get5-docker/cron.log`.
 
 #### 5.2.2 Version on DockerHub
 
-The workflow ["Uses latest CS:GO version"](https://github.com/theo-brown/csgo-docker/actions/workflows/check-csgo-version.yml)
+The workflow ["Uses latest CS:GO version"](https://github.com/theo-brown/csgo-get5-docker/actions/workflows/check-csgo-version.yml)
 checks that the version of CSGO on the image in the DockerHub registry matches the latest CS:GO patch released on Steam.
 
 The script `image_update/update-image-remote.sh` is run remotely to periodically check for CS:GO updates and keep the 

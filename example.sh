@@ -1,13 +1,10 @@
 source .env
 docker run -it --network=host \
  -e SERVER_TOKEN=$SERVER_TOKEN \
- -e PASSWORD=justclickhead \
- -e RCON_PASSWORD=justclickheadmore \
- -e GOTV_PASSWORD=nostreamsniping \
+ -e PASSWORD=password \
+ -e RCON_PASSWORD=rconpassword \
+ -e GOTV_PASSWORD=gtovpassword \
  -e PORT=27115 \
- -e GOTV_PORT=27215 \
- -e WORKSHOP_AUTHKEY=$WORKSHOP_AUTHKEY \
- -e HOST_WORKSHOP_COLLECTION=1594247524 \
- -e WORKSHOP_START_MAP=1594218755 \
- theobrown/csgo-docker:latest
+ -e GOTV_PORT=27120 \
+ theobrown/csgo-get5-docker:latest
 

@@ -3,7 +3,6 @@
 ######################
 ARGS="-game csgo -console -usercon -steam_dir $STEAMCMD_DIR -steamcmd_script $STEAMCMD_DIR/steamcmd.sh"
 
-
 if [ -v SERVER_TOKEN ]
 then
     ARGS="$ARGS +sv_setsteamaccount $SERVER_TOKEN"
@@ -105,6 +104,7 @@ fi
 if [ -v MATCH_CONFIG ]
 then
     echo $MATCH_CONFIG > $CSGO_DIR/csgo/match_config.json
+    echo 'get5_autoload_config match_config.json' > $CSGO_DIR/csgo/cfg/sourcemod/get5.cfg
 else
     echo 'get5_check_auths 0' > $CSGO_DIR/csgo/cfg/sourcemod/get5.cfg
 fi
@@ -114,5 +114,5 @@ fi
 # Launch server #
 #################
 cd $CSGO_DIR
-echo "srcds_run $ARGS"
+echo "./srcds_run $ARGS"
 ./srcds_run $ARGS

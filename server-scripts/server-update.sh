@@ -3,4 +3,3 @@ bash $STEAMCMD_DIR/steamcmd.sh \
     +login anonymous \
     +app_update 740 \
     +quit
-

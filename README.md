@@ -61,8 +61,6 @@ creation.
 works please read [Using Get5 for match creation](#using-get5-for-match-creation). If you need more detail have a look 
 at the [Get5 documentation](https://github.com/splewis/get5).
 
-This Docker image draws heavily on [CM2Walki's CSGO Docker image](https://github.com/CM2Walki/CSGO).
-
 
 ## 2. Using the image
 
@@ -102,8 +100,9 @@ If you want to start the server with a loaded config, set:
 
 #### 2.3.1 Starting a server with no match config
 
-Start a server using the host machine's IP address, with the specified port, GOTV port, password, RCON password,
-GOTV password, and (made up) server token (generate a real one [here](https://steamcommunity.com/dev/managegameservers)).
+Start a server with:
+- The host machine's IP address 
+- The specified port, GOTV port, password, RCON password, GOTV password, and server token
 
 ```
 docker run --network=host \
@@ -118,8 +117,8 @@ docker run --network=host \
 
 Any player can connect to the server and type `!get5` in chat to set up a match.
 
-If the host machine had public IP `251.131.41.166` then running the following command in the CS:GO in-game console would
-connect to the server:
+If the host machine had public IP `251.131.41.166` and port 1234 was visible to the outside world then running the 
+following command in the CS:GO in-game console would connect to the server:
 ```
 connect 251.131.41.166:1234; password mypass 
 ```
@@ -131,8 +130,11 @@ connect 251.131.41.166:1235; password gotvpass
 
 #### 2.3.2 Starting a server with a match config and in-server veto
 
-Start a server using the host machine's IP address, the default port, the specified password, RCON password, GOTV 
-password, and server token, and load the given Get5 config.
+Start a server with:
+- The host machine's IP address 
+- The specified port, GOTV port, password, RCON password, GOTV password, and server token 
+- The given Get5 config loaded
+
 Once the players are connected and ready up, the map veto will start. Once the veto is complete, the game will begin.
 ```
 docker run --network=host \
@@ -163,8 +165,10 @@ docker run --network=host \
 
 #### 2.3.3 Starting a server with a match config with preset maps
 
-Start a server using the host machine's IP address, the default port, the specified password, RCON password, GOTV 
-password, and server token, and load the given Get5 config.
+Start a server with:
+- The host machine's IP address 
+- The specified port, GOTV port, password, RCON password, GOTV password, and server token 
+- The given Get5 config loaded
 Once the players are connected and ready up, the game will begin.
 
 ```
@@ -210,11 +214,9 @@ All possible environment variables are displayed in the table below.
 | SERVER_TOKEN             | `+sv_setsteamaccount`       | The Steam Game Server Login Token for this instance, required for the server to be accessible to non-LAN connections. Generate one [here](https://steamcommunity.com/dev/managegameservers) (default: not set, ie LAN connections only).
 | PASSWORD                 | `+sv_password`              | Password required to connect to the server (default: not set)
 | RCON_PASSWORD            | `+rcon_password`            | Password required to establish an RCON (remote console) connection to the server (default: not set)
-| PUBLIC_ADDRESS           | `+net_public_adr`           | Set the public IP of the server (default: not set, defaults to your host machine's public IP if run with `--network=host`)
 | PORT                     | `-port`                     | Server port (default: 27015)
 | GOTV_PORT                | `+tv_port`                  | GOTV port (default: 27020)
 | GOTV_PASSWORD            | `+tv_password`              | GOTV password (default: not set)
-| CLIENT_PORT              | `+clientport`               | Specify the port that the server advertises to clients (default: not set). I'm not entirely sure what this does, so maybe just leave it unset.
 | TICKRATE                 | `-tickrate`                 | Server tick rate (64 or 128; default: 128)
 | MAXPLAYERS               | `-maxplayers_override`      | Limit how many players the server can contain (default: 30)
 | GAMETYPE                 | `+game_type`                | Use GAMETYPE and GAMEMODE to set what game mode is played (default: GAMETYPE=0, GAMEMODE=1, which sets game mode to competitive). Note this will be overriden by Get5.
@@ -233,7 +235,7 @@ All possible environment variables are displayed in the table below.
 Launch options are appended to the following set of basic launch options that are passed as arguments to `srcds`, the 
 dedicated server program:
 ```
--game csgo -console -usercon -steam_dir $STEAMCMD_DIR -steamcmd_script $STEAMCMD_DIR/steamcmd.sh
+-game csgo -console -usercon -steam_dir $STEAMCMD_DIR -steamcmd_script $STEAMCMD_DIR/steamcmd.sh -ip 0.0.0.0
 ```
 
 

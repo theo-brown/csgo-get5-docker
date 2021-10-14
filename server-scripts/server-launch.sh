@@ -1,7 +1,7 @@
 ######################
 # Set launch options #
 ######################
-ARGS="-game csgo -console -usercon -steam_dir $STEAMCMD_DIR -steamcmd_script $STEAMCMD_DIR/steamcmd.sh"
+ARGS="-game csgo -console -usercon -steam_dir $STEAMCMD_DIR -steamcmd_script $STEAMCMD_DIR/steamcmd.sh -ip 0.0.0.0"
 
 if [ -v SERVER_TOKEN ]
 then

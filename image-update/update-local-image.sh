@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOCKER_IMAGE="theobrown/csgo-docker:latest"
+DOCKER_IMAGE="theobrown/csgo-get5-docker:latest"
 
 
 get_local_csgo_version() {

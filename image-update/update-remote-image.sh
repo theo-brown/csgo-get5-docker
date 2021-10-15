@@ -72,10 +72,10 @@ else
     REGISTRY_CSGO_VERSION=$(get_registry_csgo_version)
     if [ ! $(check_csgo_version $REGISTRY_CSGO_VERSION) ]
     then
-       echo "Update check failed: registry still does not have latest CSGO version"
-       return 1
+        echo "Update check failed: registry still does not have latest CSGO version"
+        exit 1
     else
         echo "CS:GO is up to date (version $REGISTRY_CSGO_VERSION)."
-        return 0
+        exit 0
     fi
 fi

@@ -53,10 +53,10 @@ else
     LOCAL_CSGO_VERSION=$(get_local_csgo_version)
     if [ ! $(check_csgo_version $LOCAL_CSGO_VERSION) ]
     then
-       echo "Update failed: local image still does not have latest CSGO version"
-       return 1
+        echo "Update failed: local image still does not have latest CSGO version"
+        exit 1
     else
         echo "CS:GO is up to date (version $LOCAL_CSGO_VERSION)."
-        return 0
+        exit 0
     fi
 fi

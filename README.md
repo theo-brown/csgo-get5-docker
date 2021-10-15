@@ -1,26 +1,24 @@
 <h1 align="center">
- <img src=".readme/csgo.png" height=50px align="absmiddle">
- <img src=".readme/docker.png" height=50px align="absmiddle">
+    <img src=".readme/csgo.png" height=50px align="absmiddle">
+    <img src=".readme/docker.png" height=50px align="absmiddle">
 </h1>
 <h1 align="center">
- csgo-get5-docker
+    csgo-get5-docker
 </h1>
 <p align="center">
- <em>
-  Quickly deploy a dedicated CS:GO server for a competitive match
- </em>
+    <em>
+        Quickly deploy a dedicated CS:GO server for a competitive match
+    </em>
 </p>
-
 <p align="center">
- <a href="https://github.com/theo-brown/csgo-get5-docker/blob/main/LICENSE">
-  <img src="https://img.shields.io/github/license/theo-brown/csgo-get5-docker">
- </a>
- <img src="https://img.shields.io/maintenance/yes/2021">
- <a href="https://github.com/theo-brown/csgo-get5-docker/actions/workflows/check-latest-csgo-version.yml">
-  <img src="https://github.com/theo-brown/csgo-get5-docker/actions/workflows/check-latest-csgo-version.yml/badge.svg">
- </a>
+    <a href="https://github.com/theo-brown/csgo-get5-docker/blob/main/LICENSE">
+        <img src="https://img.shields.io/github/license/theo-brown/csgo-get5-docker">
+    </a>
+    <img src="https://img.shields.io/maintenance/yes/2021">
+    <a href="https://github.com/theo-brown/csgo-get5-docker/actions/workflows/check-latest-csgo-version.yml">
+        <img src="https://github.com/theo-brown/csgo-get5-docker/actions/workflows/check-latest-csgo-version.yml/badge.svg">
+    </a>
 </p>
-
 
 ## Contents
 
@@ -98,7 +96,7 @@ If you want to start the server with a loaded config, set:
 
 ### 2.3 Examples
 
-#### 2.3.1 Starting a server with no match config
+#### 2.3.1 Starting a server with no match config (BO1 only)
 
 Start a server with:
 - The host machine's IP address 
@@ -115,7 +113,13 @@ docker run --network=host \
  theobrown/csgo-get5-docker:latest
 ```
 
-Any player can connect to the server and type `!get5` in chat to set up a match.
+Any player can connect to the server.
+Once players are connected, to start a match, run the following in the in-game console: 
+1. Set the rcon password to the one set in the Docker launch command, e.g. `rcon_password adminpass`
+2. Set the map to the desired map using rcon and SourceMod commands, e.g. `rcon sm_map de_dust2`
+3. Start the match using `rcon get5_creatematch`
+
+Once the players ready up, the game will begin.
 
 If the host machine had public IP `251.131.41.166` and port 1234 was visible to the outside world then running the 
 following command in the CS:GO in-game console would connect to the server:
@@ -169,6 +173,7 @@ Start a server with:
 - The host machine's IP address 
 - The specified port, GOTV port, password, RCON password, GOTV password, and server token 
 - The given Get5 config loaded
+
 Once the players are connected and ready up, the game will begin.
 
 ```
@@ -250,8 +255,8 @@ The image can start a container with or without a match config, by setting the o
 `MATCH_CONFIG` or leaving it unset.
 
 If started with a match config, only the players specified in the config will be able to connect.
-If started with no match config, then any player can connect, and once connected the command `get5_creatematch` needs to
-be run in console (or `!get5` sent in chat) to set up a match.
+If started with no match config, then any player can connect, and once connected the command `rcon get5_creatematch`
+needs to be run in console to set up a match.
 
 ### 4.1 Match Config Schema
 

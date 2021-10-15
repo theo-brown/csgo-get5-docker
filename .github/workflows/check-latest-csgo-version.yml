@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKER_REPO: 'theobrown/csgo-docker'
+  DOCKER_REPO: 'theobrown/csgo-get5-docker'
 
 jobs:
   check-csgo-version:

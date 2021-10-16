@@ -79,7 +79,7 @@ COPY --chown=user cfg/* $CSGO_DIR/csgo/cfg/
 # Label this image with the image version and installed CSGO version
 # To get the version of the latest CSGO patch, run
 # curl -s "http://api.steampowered.com/ISteamApps/UpToDateCheck/v1?appid=730&version=0" | jq .response.required_version
-ARG CSGO_VERSION=13805
+ARG CSGO_VERSION=13806
 LABEL csgo_version=$CSGO_VERSION
 
 # Check that the installed version of CSGO matches the label of this image

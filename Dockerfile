@@ -20,7 +20,7 @@ RUN useradd -m user
 # Copy install script
 # Install prerequisites
 #   lib32gcc1: prerequisite for steamcmd
-#   ca-certificates: required to trust downloads from the internet
+#   ca-certificates: required to trust downloads from the internet, including running csgo
 #   wget: used to download steam and plugins
 #   lib32stdc++6: required for source plugins
 #   unzip: required to unzip get5
@@ -58,7 +58,7 @@ RUN apt-get -qq update \
        && rsync -aq get5/addons/ $CSGO_DIR/csgo/addons \
        && rsync -aq get5/cfg/ $CSGO_DIR/csgo/cfg \
        && rm -rf get5 get5.zip" \
-    && apt-get -qq purge -y unzip rsync wget ca-certificates \
+    && apt-get -qq purge -y unzip rsync wget \
     && apt-get -qq autoremove -y \
     && apt-get -qq clean \
     && rm -rf /var/lib/apt/lists/*

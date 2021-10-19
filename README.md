@@ -64,7 +64,7 @@ at the [Get5 documentation](https://github.com/splewis/get5).
 
 ### 2.1 Quickstart
 
-1. Download the image from [Docker hub](https://hub.docker.com/r/theobrown/csgo-server):
+1. Download the image from [Docker hub](https://hub.docker.com/r/theobrown/csgo-get5-docker):
 ```
 docker pull theobrown/csgo-get5-docker:latest
 ```

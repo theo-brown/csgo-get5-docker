@@ -14,7 +14,7 @@
     <a href="https://github.com/theo-brown/csgo-get5-docker/blob/main/LICENSE">
         <img src="https://img.shields.io/github/license/theo-brown/csgo-get5-docker">
     </a>
-    <img src="https://img.shields.io/maintenance/no/2021">
+    <img src="https://img.shields.io/maintenance/no/2022">
     <a href="https://github.com/theo-brown/csgo-get5-docker/actions/workflows/check-latest-csgo-version.yml">
         <img src="https://github.com/theo-brown/csgo-get5-docker/actions/workflows/check-latest-csgo-version.yml/badge.svg">
     </a>
